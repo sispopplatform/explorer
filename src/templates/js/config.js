@@ -5,12 +5,12 @@ var config = {
     txMinConfirms: 10,         // corresponds to CRYPTONOTE_DEFAULT_TX_SPENDABLE_AGE in Sispop
     txCoinbaseMinConfirms: 60, // corresponds to CRYPTONOTE_MINED_MONEY_UNLOCK_WINDOW in Sispop
     coinSymbol: 'SISPOP',
-    openAliasPrefix: "lok",
+    openAliasPrefix: "sispop",
     coinName: 'Sispop',
     coinUriPrefix: 'sispop:',
-    addressPrefix: 114,
-    integratedAddressPrefix: 115,
-    subAddressPrefix: 116,
+    addressPrefix: 18,
+    integratedAddressPrefix: 19,
+    subAddressPrefix: 20,
     addressPrefixTestnet: 156,
     integratedAddressPrefixTestnet: 157,
     subAddressPrefixTestnet: 158,

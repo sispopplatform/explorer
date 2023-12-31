@@ -102,7 +102,7 @@ main(int ac, const char* av[])
 
 
     // set  sispop log output level
-    mlog_configure("", true);
+    //mlog_configure("", true);
     if (log_level)
         mlog_set_log(log_level->c_str());
 
