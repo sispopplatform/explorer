@@ -1521,7 +1521,7 @@ index2(uint64_t page_no = 0, bool refresh_page = false)
                 = CurrentBlockchainStatus::get_emission();
 
         std::string emission_blk_no   = std::to_string(current_values.blk_no - 1);
-        std::string emission_supply   = lokeg::make_comma_sep_number(current_values.circulating_supply / COIN);
+        std::string emission_supply   = lokeg::make_comma_sep_number(current_values.coinbase / COIN);
         std::string emission_coinbase = lokeg::make_comma_sep_number(current_values.coinbase / COIN);
         std::string emission_fee      = lokeg::make_comma_sep_number(current_values.fee / COIN);
         std::string emission_burn     = current_values.burn ? lokeg::make_comma_sep_number(current_values.burn / COIN) : "0";

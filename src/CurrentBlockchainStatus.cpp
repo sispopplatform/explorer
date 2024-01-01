@@ -23,18 +23,6 @@ CurrentBlockchainStatus::set_blockchain_variables(MicroCore* _mcore,
 }
 
 using BlockHeight = uint64_t;
-uint64_t const founders_locked_sispop            = 1215000 * COIN;
-uint64_t const seed_locked_sispop                = 581000 * COIN;
-uint64_t const half_seed_locked_sispop           = seed_locked_sispop * COIN / 2;
-static std::map<BlockHeight, uint64_t> time_locked_sispop =
-{
-    {0,      871500 * COIN},
-    {69456,  founders_locked_sispop + seed_locked_sispop},
-    {134079, founders_locked_sispop + seed_locked_sispop},
-    {198639, founders_locked_sispop + seed_locked_sispop},
-    {263423, founders_locked_sispop + half_seed_locked_sispop}
-};
-
 void
 CurrentBlockchainStatus::start_monitor_blockchain_thread()
 {
@@ -129,7 +117,7 @@ CurrentBlockchainStatus::update_current_emission_amount()
     Emission emission_calculated = calculate_emission_in_blocks(blk_no, end_block, unlocked);
 
     current_emission.coinbase           += emission_calculated.coinbase;
-    current_emission.circulating_supply += emission_calculated.circulating_supply + unlocked;
+    current_emission.circulating_supply += emission_calculated.coinbase;
     current_emission.fee                += emission_calculated.fee;
     current_emission.burn               += emission_calculated.burn;
     current_emission.blk_no              = emission_calculated.blk_no;
@@ -168,18 +156,7 @@ CurrentBlockchainStatus::calculate_emission_in_blocks(uint64_t start_blk, uint64
       emission_calculated.circulating_supply += coinbase - (fee + burn);
       emission_calculated.fee                += fee;
       emission_calculated.burn               += burn;
-
-      if (start_blk == 0)
-      {
-        for (auto const &it : time_locked_sispop)
-            emission_calculated.circulating_supply -= it.second;
-      }
-
-      auto unlock_it = time_locked_sispop.find(start_blk);
-      if (unlock_it != time_locked_sispop.end())
-          unlocked += unlock_it->second;
-    }
-
+     }
     emission_calculated.blk_no = start_blk;
     return emission_calculated;
 }
@@ -303,7 +280,7 @@ CurrentBlockchainStatus::get_emission()
                 = calculate_emission_in_blocks(start_blk, end_block, unlocked);
 
         current_emission.coinbase           += gap_emission_calculated.coinbase;
-        current_emission.circulating_supply += gap_emission_calculated.circulating_supply + unlocked;
+        current_emission.circulating_supply += gap_emission_calculated.coinbase;
         current_emission.fee                += gap_emission_calculated.fee;
         current_emission.burn               += gap_emission_calculated.burn;
         current_emission.blk_no              = gap_emission_calculated.blk_no > 0
@@ -326,7 +303,7 @@ cryptonote::network_type CurrentBlockchainStatus::nettype {cryptonote::network_t
 
 string CurrentBlockchainStatus::output_file {"emission_amount.txt"};
 
-string CurrentBlockchainStatus::daemon_url {"http:://127.0.0.1:22023"};
+string CurrentBlockchainStatus::daemon_url {"http:://127.0.0.1:30000"};
 
 uint64_t  CurrentBlockchainStatus::blockchain_chunk_size {10000};
 uint64_t  CurrentBlockchainStatus::blockchain_chunk_gap {3};
